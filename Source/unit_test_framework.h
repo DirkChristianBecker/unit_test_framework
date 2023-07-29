@@ -608,8 +608,8 @@ int TestSuite::run_tests(int argc, char** argv) {
         std::cout << std::endl;
 
         std::cout << "*** Summary ***" << std::endl;
-        std::cout << white << "Out of " << test_names_to_run.size() << " tests run " << test_names_to_run.size() - num_failures - num_errors << green << " passed ";
-        std::cout << red << num_failures << " failure(s), " << num_errors << " error(s)" << std::endl;
+        std::cout << white << "Out of " << test_names_to_run.size() << " tests " << test_names_to_run.size() - num_failures - num_errors << green << " passed ";
+        std::cout << red << num_failures << white << " failed, " << red << num_errors << white << " had errors error(s)" << std::endl;
     }
 
     if (num_failures == 0 and num_errors == 0) {
