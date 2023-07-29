@@ -10,6 +10,11 @@ Install the unit test framework by copying `unit_test_framework.h` into your pro
 ```console
 $ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/main/unit_test_framework.h
 ```
+In Windows you may use the powershell to achieve the same with the command:
+```console
+Invoke-WebRequest https://raw.githubusercontent.com/DirkChristianBecker/unit_test_framework/main/Source/unit_test_framework.h -OutFile unit_test_framework.h
+```
+There is a powershell script in the main directory that you should copy into your source diretory and run it from there.
 
 Get the unit test example.
 ```console
