@@ -16,20 +16,10 @@ Invoke-WebRequest https://raw.githubusercontent.com/DirkChristianBecker/unit_tes
 ```
 There is a powershell script in the main directory that you should copy into your source diretory and run it from there.
 
-Get the unit test example.
-```console
-$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/my_tests.cpp
+## Building the tests
+If you want to build the tests use cmake and set the option UNIT_TEST_FRAMEWORK_BUILD_TESTS to true.
+
 ```
-
-Compile and run.
-```console
-$ g++ --std=c++11 my_tests.cpp -o my_tests.exe
-$ ./my_tests.exe
-Running test: bool_is_true
-PASS
-Running test: numbers_equal
-PASS
-
 *** Results ***
 ** Test case 'bool_is_true': PASS
 ** Test case 'numbers_equal': PASS
