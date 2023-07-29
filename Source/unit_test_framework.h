@@ -305,6 +305,13 @@ std::ostream& print(std::ostream& os, const T& t) {
 }
 
 // ----------------------------------------------------------------------------
+#define ASSERT_EQ(first, second)                                           \
+    assert_equal((first), (second), __LINE__,                                 \
+                 "ASSERT_EQUAL(" #first ", " #second ")");
+
+#define ASSERT_STREQ(first, second)                                           \
+    assert_equal((first), (second), __LINE__,                                 \
+                 "ASSERT_EQUAL(" #first ", " #second ")");
 
 #define ASSERT_EQUAL(first, second)                                           \
     assert_equal((first), (second), __LINE__,                                 \
@@ -330,7 +337,7 @@ std::ostream& print(std::ostream& os, const T& t) {
                         #precision ")");
 
 #define ASSERT_NO_THROW(func) \
-    assert_no_throw(func, __LINE__, "Function" #func)
+    assert_no_throw(func, __LINE__, "Function " #func)
 
 // Template logic to produce a static assertion failure when comparing
 // incomparable types.
@@ -394,10 +401,26 @@ struct safe_equals {
 
 template <typename First, typename Second>
 void assert_equal(First&& first, Second&& second, int line_number,
-                  const char* assertion_text) {
-    if (safe_equals<First, Second>::equals(first, second)) {
+                  const char* assertion_text)
+{
+    if (safe_equals<First, Second>::equals(first, second))
+    {
         return;
     }
+    std::ostringstream reason;
+    print(reason, first);
+    reason << " != ";
+    print(reason, second);
+    throw TestFailure(reason.str(), line_number, assertion_text);
+}
+
+template <> void assert_equal(std::string& first, std::string& second, int line_number, const char* assertion_text)
+{
+    if (first == second)
+    {
+        return;
+    }
+
     std::ostringstream reason;
     print(reason, first);
     reason << " != ";
