@@ -1,8 +1,5 @@
 Unit Test Framework
 ===================
-
-[![`main` Build Status](https://travis-ci.com/eecs280staff/unit_test_framework.svg?branch=main)](https://travis-ci.com/eecs280staff/unit_test_framework)
-
 A lightweight, easy to use, C++11 unit testing framework implemented in a single `.h` file.
 
 Publicly available tutorial: [https://eecs280staff.github.io/unit_test_framework/](https://eecs280staff.github.io/unit_test_framework/)
