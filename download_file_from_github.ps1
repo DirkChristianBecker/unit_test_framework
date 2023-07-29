@@ -1,1 +1,0 @@
-Invoke-WebRequest https://raw.githubusercontent.com/DirkChristianBecker/unit_test_framework/main/Source/unit_test_framework.h -OutFile unit_test_framework.h
