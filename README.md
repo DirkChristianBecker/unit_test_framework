@@ -1,8 +1,5 @@
 Unit Test Framework
 ===================
-
-[![`main` Build Status](https://travis-ci.com/eecs280staff/unit_test_framework.svg?branch=main)](https://travis-ci.com/eecs280staff/unit_test_framework)
-
 A lightweight, easy to use, C++11 unit testing framework implemented in a single `.h` file.
 
 Publicly available tutorial: [https://eecs280staff.github.io/unit_test_framework/](https://eecs280staff.github.io/unit_test_framework/)
@@ -13,21 +10,16 @@ Install the unit test framework by copying `unit_test_framework.h` into your pro
 ```console
 $ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/main/unit_test_framework.h
 ```
-
-Get the unit test example.
+In Windows you may use the powershell to achieve the same with the command:
 ```console
-$ wget https://raw.githubusercontent.com/eecs280staff/unit_test_framework/my_tests.cpp
+Invoke-WebRequest https://raw.githubusercontent.com/DirkChristianBecker/unit_test_framework/main/Source/unit_test_framework.h -OutFile unit_test_framework.h
 ```
+There is a powershell script in the main directory that you should copy into your source diretory and run it from there.
 
-Compile and run.
-```console
-$ g++ --std=c++11 my_tests.cpp -o my_tests.exe
-$ ./my_tests.exe
-Running test: bool_is_true
-PASS
-Running test: numbers_equal
-PASS
+## Building the tests
+If you want to build the tests use cmake and set the option UNIT_TEST_FRAMEWORK_BUILD_TESTS to true.
 
+```
 *** Results ***
 ** Test case 'bool_is_true': PASS
 ** Test case 'numbers_equal': PASS
