@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <exception>
 #include <stdexcept>
+#include <chrono>
 
 // For compatibility with Visual Studio
 #include <ciso646>
@@ -39,9 +40,14 @@ using Test_func_t = void (*)();
     TEST_SUITE_INSTANCE();
 
 
-struct TestCase {
+struct TestCase
+{
+    std::chrono::duration<double> Elapsed;
+
     TestCase(const std::string& name_, Test_func_t test_func_)
-        : name(name_), test_func(test_func_) {}
+        :   name(name_),
+            test_func(test_func_),
+            Elapsed(0) {}
 
     void run(bool quiet_mode);
     void print(bool quiet_mode);
@@ -413,14 +419,19 @@ void assert_sequence_equal(First&& first, Second&& second, int line_number,
 
 void TestCase::run(bool quiet_mode) {
     try {
-        if (not quiet_mode) {
-            std::cout << "Running test: " << name << std::endl;
+        if (not quiet_mode)
+        {
+            std::cout << "Running test: '" << name << "' ... ";
         }
 
+        auto start = std::chrono::high_resolution_clock::now();
         test_func();
+        auto finish = std::chrono::high_resolution_clock::now();
 
-        if (not quiet_mode) {
-            std::cout << "PASS" << std::endl;
+        if (not quiet_mode)
+        {
+            Elapsed = finish - start;
+            std::cout << "PASS in " << Elapsed.count() << " ms" << std::endl;
         }
     }
     catch (TestFailure& failure) {
@@ -444,10 +455,12 @@ void TestCase::run(bool quiet_mode) {
 }
 
 void TestCase::print(bool quiet_mode) {
-    if (quiet_mode) {
+    if (quiet_mode)
+    {
         std::cout << name << ": ";
     }
-    else {
+    else
+    {
         std::cout << "** Test case \"" << name << "\": ";
     }
 
@@ -463,8 +476,9 @@ void TestCase::print(bool quiet_mode) {
             std::cout << exception_msg << std::endl;
         }
     }
-    else {
-        std::cout << "PASS" << std::endl;
+    else
+    {
+        std::cout << "PASS in " << Elapsed.count() << " ms" << std::endl;
     }
 }
 
