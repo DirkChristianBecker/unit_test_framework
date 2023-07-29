@@ -17,6 +17,7 @@
 #include <exception>
 #include <stdexcept>
 #include <chrono>
+#include <functional>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -327,6 +328,9 @@ std::ostream& print(std::ostream& os, const T& t) {
     assert_almost_equal((first), (second), (precision), __LINE__,             \
                         "ASSERT_ALMOST_EQUAL(" #first ", " #second ", "       \
                         #precision ")");
+
+#define ASSERT_NO_THROW(func) \
+    assert_no_throw(func, __LINE__, "Function" #func)
 
 // Template logic to produce a static assertion failure when comparing
 // incomparable types.
@@ -725,6 +729,20 @@ void assert_almost_equal(double first, double second, double precision,
     reason.precision(20);
     reason << "Values too far apart: " << first << " and " << second;
     throw TestFailure(reason.str(), line_number, assertion_text);
+}
+
+void assert_no_throw(std::function<void()> func, int line_number, const char* assertion_text)
+{
+    try
+    {
+        func();
+    }
+    catch(...)
+    {
+        std::ostringstream reason;
+        reason << "Expected false, but was true";
+        throw TestFailure(reason.str(), line_number, assertion_text);
+    }
 }
 
 #endif  // UNIT_TEST_FRAMEWORK_H
