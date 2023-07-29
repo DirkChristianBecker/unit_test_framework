@@ -543,7 +543,7 @@ void TestCase::print(bool quiet_mode)
     }
     else
     {
-        std::cout << red << "PASS" << white << " in " << Elapsed.count() << " s " << std::endl;
+        std::cout << green << "PASS" << white << " in " << Elapsed.count() << " s " << std::endl;
     }
 }
 

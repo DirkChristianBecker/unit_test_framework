@@ -31,3 +31,8 @@
 *.out.txt
 .vscode
 .DS_Store
+
+/lib
+/bin
+*.pdb
+*.pdb
