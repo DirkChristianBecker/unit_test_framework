@@ -14,7 +14,6 @@ In Windows you may use the powershell to achieve the same with the command:
 ```console
 Invoke-WebRequest https://raw.githubusercontent.com/DirkChristianBecker/unit_test_framework/main/Source/unit_test_framework.h -OutFile unit_test_framework.h
 ```
-There is a powershell script in the main directory that you should copy into your source diretory and run it from there.
 
 ## Building the tests
 If you want to build the tests use cmake and set the option UNIT_TEST_FRAMEWORK_BUILD_TESTS to true.
