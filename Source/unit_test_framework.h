@@ -19,9 +19,58 @@
 #include <chrono>
 
 #ifdef _WIN32
-#include <windows.h>  
+#include <windows.h>
+inline std::ostream& red(std::ostream& s)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hStdout, FOREGROUND_RED | FOREGROUND_INTENSITY);
+    return s;
+}
+
+inline std::ostream& green(std::ostream& s)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hStdout, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+    return s;
+}
+
+inline std::ostream& white(std::ostream& s)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(
+        hStdout, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    return s;
+}
+
+struct color {
+    color(WORD attribute) : m_color(attribute){};
+    WORD m_color;
+};
+
+template <class _Elem, class _Traits>
+std::basic_ostream<_Elem, _Traits>&
+operator<<(std::basic_ostream<_Elem, _Traits>& i, color& c) {
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hStdout, c.m_color);
+    return i;
+}
+
 #else
 #include <stdlib.h>
+inline std::ostream& red(std::ostream& s)
+{
+    return s;
+}
+
+inline std::ostream& green(std::ostream& s)
+{
+    return s;
+}
+
+inline std::ostream& white(std::ostream& s)
+{
+    return s;
+}
 #endif
 
 // For compatibility with Visual Studio
@@ -429,9 +478,7 @@ void TestCase::run(bool quiet_mode)
     {
         if (not quiet_mode)
         {
-            // https://www.geeksforgeeks.org/how-to-print-colored-text-in-c/
-            std::system("Color 0F");
-            std::cout << "Running test: '" << name << "' ... ";
+            std::cout << white << "Running test: '" << name << "' ... ";
         }
 
         auto start = std::chrono::high_resolution_clock::now();
@@ -440,11 +487,8 @@ void TestCase::run(bool quiet_mode)
 
         if (not quiet_mode)
         {
-            std::system("Color 02");
             Elapsed = finish - start;
-            std::cout << "PASS";
-            std::system("Color 0F");
-            std::cout << " in " << Elapsed.count() << " s" << std::endl;
+            std::cout << green << "PASS" << white << " in " << Elapsed.count() << " s" << std::endl;
         }
     }
     catch (TestFailure& failure) {
@@ -452,16 +496,13 @@ void TestCase::run(bool quiet_mode)
 
         if (not quiet_mode)
         {
-            std::system("Color 04");
-            std::cout << "FAIL" << std::endl;
+            std::cout << red << "FAIL" << std::endl;
         }
     }
     catch (std::exception& e)
     {
-        std::system("Color 04");
-
         std::ostringstream oss;
-        oss << "Uncaught " << demangle(typeid(e).name()) << " in test \""
+        oss << red << "Uncaught " << demangle(typeid(e).name()) << " in test \""
             << name << "\": \n";
         oss << e.what() << '\n';
         exception_msg = oss.str();
@@ -475,20 +516,18 @@ void TestCase::run(bool quiet_mode)
 
 void TestCase::print(bool quiet_mode)
 {
-    std::system("Color 0F");
     if (quiet_mode)
     {
-        std::cout << name << ": ";
+        std::cout << white << name << ": ";
     }
     else
     {
-        std::cout << "** Test case \"" << name << "\": ";
+        std::cout << white << "** Test case \"" << name << "\": ";
     }
 
-    std::system("Color 04");
     if (not failure_msg.empty())
     {
-        std::cout << "FAIL" << std::endl;
+        std::cout << red << "FAIL" << std::endl;
         if (not quiet_mode)
         {
             std::cout << failure_msg << std::endl;
@@ -496,7 +535,7 @@ void TestCase::print(bool quiet_mode)
     }
     else if (not exception_msg.empty())
     {
-        std::cout << "ERROR" << std::endl;
+        std::cout << red << "ERROR" << std::endl;
         if (not quiet_mode)
         {
             std::cout << exception_msg << std::endl;
@@ -504,10 +543,7 @@ void TestCase::print(bool quiet_mode)
     }
     else
     {
-        std::system("Color 02");
-        std::cout << "PASS";
-        std::system("Color 0F");
-        std::cout << " in " << Elapsed.count() << " s " << std::endl;
+        std::cout << red << "PASS" << white << " in " << Elapsed.count() << " s " << std::endl;
     }
 }
 
