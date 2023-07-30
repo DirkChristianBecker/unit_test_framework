@@ -1,5 +1,4 @@
-#ifndef UNIT_TEST_FRAMEWORK_H
-#define UNIT_TEST_FRAMEWORK_H
+#pragma once
 
 #include <map>
 #include <utility>
@@ -767,5 +766,3 @@ void assert_no_throw(std::function<void()> func, int line_number, const char* as
         throw TestFailure(reason.str(), line_number, assertion_text);
     }
 }
-
-#endif  // UNIT_TEST_FRAMEWORK_H
